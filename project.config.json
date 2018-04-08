@@ -9,8 +9,8 @@
 	},
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
-	"appid": "touristappid",
-	"projectname": "time-mail-mini",
+	"appid": "wx1c426b7c3311c97d",
+	"projectname": "%E6%97%B6%E5%85%89%E9%82%AE%E4%BB%B6",
 	"condition": {
 		"search": {
 			"current": -1,
