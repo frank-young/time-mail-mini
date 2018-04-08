@@ -24,6 +24,7 @@
 
 <script>
 import card from '@/components/card'
+import API from '@/api'
 
 export default {
   data () {
@@ -45,10 +46,11 @@ export default {
     getUserInfo () {
       // 调用登录接口
       wx.login({
-        success: () => {
+        success: (res) => {
           wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
+            success: (res2) => {
+              this.userInfo = res2.userInfo
+              API.loginByWeixin({code: res.code})
             }
           })
         }

@@ -1,16 +1,16 @@
 <template>
   <div>
     <ul class="container log-list">
-      <li v-for="(log, index) in logs" :class="{ red: aa }" :key="index" class="log-item">
-        <card :text="(index + 1) + ' . ' + log"></card>
+      <li v-for="e in emails" :key="e.id" class="log-item">
+        {{ e.title }}
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { formatTime } from '@/utils/index'
 import card from '@/components/card'
+import API from '@/api'
 
 export default {
   components: {
@@ -19,13 +19,14 @@ export default {
 
   data () {
     return {
-      logs: []
+      emails: []
     }
   },
-
   created () {
-    const logs = (wx.getStorageSync('logs') || [])
-    this.logs = logs.map(log => formatTime(new Date(log)))
+    API.getPublicEmailList()
+    .then(res => {
+      this.emails = res.data.data
+    })
   }
 }
 </script>
