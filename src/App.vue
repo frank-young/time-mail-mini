@@ -1,12 +1,29 @@
 <script>
+import API from '@/api'
+
 export default {
   created () {
-    // 调用API从本地缓存中获取数据
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    console.log('app created and cache logs by setStorageSync')
+    this.getUserInfo()
+  },
+  methods: {
+    getUserInfo () {
+      // 调用登录接口
+      wx.login({
+        success: (res) => {
+          wx.getUserInfo({
+            success: (res2) => {
+              this.userInfo = res2.userInfo
+              API.loginByWeixin({code: res.code, userInfo: res2})
+              .then(res => {
+                wx.setStorageSync('userInfo', res.data.userInfo)
+                wx.setStorageSync('token', res.data.token)
+                this.$store.commit('set')
+              })
+            }
+          })
+        }
+      })
+    }
   }
 }
 </script>

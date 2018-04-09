@@ -8,7 +8,8 @@ let http = {
         data: body,
         method: 'POST',
         header: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'token': Number(wx.getStorageSync('token'))
         },
         success (res) {
           resolve(res.data)  // 把返回的数据传出去

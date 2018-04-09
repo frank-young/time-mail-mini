@@ -13,18 +13,16 @@
         <card :text="motto"></card>
       </div>
     </div>
-
     <form class="form-container">
       <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
       <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
     </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+    <a href="/pages/counter/main" class="counter">去往Vuex示例页面 {{count}}</a>
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
-import API from '@/api'
 
 export default {
   data () {
@@ -33,37 +31,30 @@ export default {
       userInfo: {}
     }
   },
-
+  computed: {
+    count () {
+      return this.$store.state.count
+    }
+  },
   components: {
     card
   },
-
   methods: {
     bindViewTap () {
       const url = '../logs/main'
       wx.navigateTo({ url })
     },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: (res) => {
-          wx.getUserInfo({
-            success: (res2) => {
-              this.userInfo = res2.userInfo
-              API.loginByWeixin({code: res.code})
-            }
-          })
-        }
-      })
-    },
     clickHandle (msg, ev) {
       console.log('clickHandle:', msg, ev)
     }
   },
-
   created () {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+  },
+  watch: {
+    '$store.state.count' (to) {
+      console.log(to)
+    }
   }
 }
 </script>
