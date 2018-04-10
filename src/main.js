@@ -19,9 +19,9 @@ export default {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#0D45E4',
       navigationBarTitleText: '时光邮件',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'white'
     },
     tabBar: {
       backgroundColor: '#fafafa',
