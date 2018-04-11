@@ -41,11 +41,16 @@ function getPublicEmailList () {
   return http.get('post/public/list')
 }
 
+function postEmail (data) {
+  return http.post('post/store', data)
+}
+
 function loginByWeixin (data) {
   return http.post('auth/loginByWeixin', data)
 }
 
 export default {
   getPublicEmailList,
-  loginByWeixin
+  loginByWeixin,
+  postEmail
 }
