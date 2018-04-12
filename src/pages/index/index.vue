@@ -67,7 +67,7 @@
           <input class="title" type="text" placeholder="请输入手机号" v-model="post.phone">
         </div>
         <div class="form-group">
-          <button hover-class="send-hover" class="send animate-background" form-type="submit"> {{configText.sendText}} </button>
+          <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{configText.sendText}} </button>
         </div>
       </form>
     </div>
@@ -77,6 +77,7 @@
 <script>
 import moment from 'moment'
 import API from '@/api'
+import Validator from 'validator.tool'
 
 export default {
   data () {
@@ -100,7 +101,10 @@ export default {
       arriveYear: 1,
       isShowDefaultYear: true,
       startDate: moment().add(10, 'days').format('YYYY-MM-DD'),
-      endDate: moment().add(20, 'years').format('YYYY-MM-DD')
+      endDate: moment().add(20, 'years').format('YYYY-MM-DD'),
+      // 提交过程
+      isSending: false,
+      isDisabled: false
     }
   },
   computed: {
@@ -126,11 +130,68 @@ export default {
     isPublicChange (e) {
       this.post.is_public = Number(e.target.value)
     },
-    submit (e) {
-      API.postEmail(this.post)
-      .then(res => {
-        console.log(res)
-      })
+    // 提交
+    submit () {
+      let res = this.validate(this.post)
+      if (!res.bool) {
+        console.log(res.msg)
+        return
+      }
+
+      this.startSend()
+      setTimeout(() => {
+        API.postEmail(this.post)
+        .then(res => {
+          console.log(res)
+          this.successSend()
+        })
+        .catch(() => {
+          this.failSend()
+        })
+      }, 5000)
+    },
+    // 验证
+    validate (data) {
+      let v = new Validator()
+      let bool = false
+      let msg = ''
+      console.log()
+
+      if (!v.required(data.title)) {
+        msg = '标题不能为空'
+      } else if (!v.maxLength(data.title, 100)) {
+        msg = '标题长度过长'
+      } else if (!v.required(data.content)) {
+        msg = '内容不能为空'
+      } else if (!v.minLength(data.content, 5)) {
+        msg = '内容太短咯～'
+      } else if (!v.isEmail(data.email)) {
+        msg = '邮箱格式错误哟～'
+      } else if (!v.isPhone(data.phone)) {
+        msg = '手机格式错误哟～'
+      } else {
+        bool = true
+      }
+      return {
+        bool,
+        msg
+      }
+    },
+    // 分离提交状态
+    startSend () {
+      this.isSending = true
+      this.isDisabled = true
+      this.configText.sendText = '寄送中'
+    },
+    successSend () {
+      this.isSending = false
+      this.isDisabled = true
+      this.configText.sendText = '寄送成功'
+    },
+    failSend () {
+      this.isSending = false
+      this.isDisabled = false
+      this.configText.sendText = '寄送失败，重新寄送'
     }
   },
   created () {
