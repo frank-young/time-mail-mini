@@ -71,6 +71,11 @@
         </div>
       </form>
     </div>
+    <div class="toast" v-show="isShow">
+      <div class="toast-content">
+        {{ toastMsg }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -104,7 +109,10 @@ export default {
       endDate: moment().add(20, 'years').format('YYYY-MM-DD'),
       // 提交过程
       isSending: false,
-      isDisabled: false
+      isDisabled: false,
+      // toast
+      isShow: false,
+      toastMsg: ''
     }
   },
   computed: {
@@ -134,7 +142,7 @@ export default {
     submit () {
       let res = this.validate(this.post)
       if (!res.bool) {
-        console.log(res.msg)
+        this.show(res.msg)
         return
       }
 
@@ -142,7 +150,6 @@ export default {
       setTimeout(() => {
         API.postEmail(this.post)
         .then(res => {
-          console.log(res)
           this.successSend()
         })
         .catch(() => {
@@ -155,7 +162,6 @@ export default {
       let v = new Validator()
       let bool = false
       let msg = ''
-      console.log()
 
       if (!v.required(data.title)) {
         msg = '标题不能为空'
@@ -192,6 +198,14 @@ export default {
       this.isSending = false
       this.isDisabled = false
       this.configText.sendText = '寄送失败，重新寄送'
+    },
+    // ToastPlugin
+    show (msg) {
+      this.isShow = true
+      this.toastMsg = msg
+      setTimeout(() => {
+        this.isShow = false
+      }, 2000)
     }
   },
   created () {
@@ -325,5 +339,26 @@ export default {
   100%{
     background-position:0% 80%;
   }
+}
+.toast {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+.toast-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 45px;
+  line-height: 45px;
+  padding: 0 30px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 14px;
 }
 </style>
