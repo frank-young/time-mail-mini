@@ -23,7 +23,7 @@ export default {
     }
   },
   created () {
-    API.getPublicEmailList()
+    API.getPublicLetters()
     .then(res => {
       this.emails = res.data.data
     })

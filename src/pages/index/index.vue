@@ -3,13 +3,13 @@
     <div class="tips">
       {{ configText.tips }}
     </div>
-    <div class="email-wrap">
+    <div class="letter-wrap">
       <form @submit="submit">
         <div class="form-group">
-          <input class="title" type="text" v-model="post.title">
+          <input class="title" type="text" v-model="letter.title">
         </div>
         <div class="form-group">
-          <textarea v-model="post.content" :placeholder="configText.emailPlaceholder" :focus="true" class="content" email-input>1</textarea>
+          <textarea v-model="letter.content" :placeholder="configText.emailPlaceholder" :focus="true" class="content" email-input>1</textarea>
         </div>
         <div class="form-group">
           <div class="select-title">到达时间</div>
@@ -29,12 +29,12 @@
               </label>
             </div>
             <div class="select-left" v-else>
-              <picker class="select-date-show" mode="date" :value="post.arrive_time" :start="startDate" :end="endDate" @change="arriveDateChange">
-                {{ post.arrive_time }}
+              <picker class="select-date-show" mode="date" :value="letter.arrive_time" :start="startDate" :end="endDate" @change="arriveDateChange">
+                {{ letter.arrive_time }}
               </picker>
             </div>
             <div class="select-right" v-if="isShowDefaultYear">
-              <picker class="select-radio-tips" mode="date" :value="post.arrive_time" :start="startDate" :end="endDate" @change="arriveDateChange">
+              <picker class="select-radio-tips" mode="date" :value="letter.arrive_time" :start="startDate" :end="endDate" @change="arriveDateChange">
                 自定义
               </picker>
             </div>
@@ -51,20 +51,20 @@
             <div class="select-left">
               <label class="select-label">
                 <input class="select-radio" type="radio" name="public" :value="1" checked>
-                <div class="select-radio-tips" :class="{active: post.is_public === 1}">公开</div>
+                <div class="select-radio-tips" :class="{active: letter.is_public === 1}">公开</div>
               </label>
               <label class="select-label">
                 <input class="select-radio" type="radio" name="public" :value="0">
-                <div class="select-radio-tips" :class="{active: post.is_public === 0}">不公开</div>
+                <div class="select-radio-tips" :class="{active: letter.is_public === 0}">不公开</div>
               </label>
             </div>
           </radio-group>
         </div>
         <div class="form-group">
-          <input class="title" type="text" placeholder="请输入邮箱" v-model="post.email">
+          <input class="title" type="text" placeholder="请输入邮箱" v-model="letter.email">
         </div>
         <div class="form-group">
-          <input class="title" type="text" placeholder="请输入手机号" v-model="post.phone">
+          <input class="title" type="text" placeholder="请输入手机号" v-model="letter.phone">
         </div>
         <div class="form-group">
           <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{configText.sendText}} </button>
@@ -88,7 +88,7 @@ export default {
   data () {
     return {
       userInfo: {},
-      post: {
+      letter: {
         title: '给2019年的自己😄',
         content: '',
         is_public: 1,
@@ -121,41 +121,39 @@ export default {
     // 默认到达年份选择
     arriveYearChange (e) {
       this.arriveYear = Number(e.target.value)
-      this.post.arrive_time = moment().add(this.arriveYear, 'years').format('YYYY-MM-DD')
+      this.letter.arrive_time = moment().add(this.arriveYear, 'years').format('YYYY-MM-DD')
     },
     // 自定义到达日期选择
     arriveDateChange (e) {
       this.isShowDefaultYear = false
-      this.post.arrive_time = e.target.value
+      this.letter.arrive_time = e.target.value
     },
     // 取消自定义选择日期
     cancelCustomerSelect () {
       this.isShowDefaultYear = true
-      this.post.arrive_time = moment().add(1, 'years').format('YYYY-MM-DD')
+      this.letter.arrive_time = moment().add(1, 'years').format('YYYY-MM-DD')
       this.arriveYear = 1
     },
     // 是否是公开邮件
     isPublicChange (e) {
-      this.post.is_public = Number(e.target.value)
+      this.letter.is_public = Number(e.target.value)
     },
     // 提交
     submit () {
-      let res = this.validate(this.post)
+      let res = this.validate(this.letter)
       if (!res.bool) {
         this.show(res.msg)
         return
       }
 
       this.startSend()
-      setTimeout(() => {
-        API.postEmail(this.post)
-        .then(res => {
-          this.successSend()
-        })
-        .catch(() => {
-          this.failSend()
-        })
-      }, 5000)
+      API.sendLetter(this.letter)
+      .then(res => {
+        this.successSend()
+      })
+      .catch(() => {
+        this.failSend()
+      })
     },
     // 验证
     validate (data) {
@@ -193,6 +191,7 @@ export default {
       this.isSending = false
       this.isDisabled = true
       this.configText.sendText = '寄送成功'
+      this.$router.push({ path: '/pages/success/main', reLaunch: true })
     },
     failSend () {
       this.isSending = false
@@ -226,7 +225,7 @@ export default {
     // background: linear-gradient(180deg, #0D45E4, #3D45E4);
     font-size: 40rpx;
   }
-  .email-wrap {
+  .letter-wrap {
     padding: 30rpx 40rpx;
   }
   .form-group {

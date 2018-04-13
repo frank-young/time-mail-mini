@@ -37,12 +37,12 @@ let http = {
   }
 }
 
-function getPublicEmailList () {
-  return http.get('post/public/list')
+function getPublicLetters () {
+  return http.get('letter/list')
 }
 
-function postEmail (data) {
-  return http.post('post/store', data)
+function sendLetter (data) {
+  return http.post('letter/store', data)
 }
 
 function loginByWeixin (data) {
@@ -50,7 +50,7 @@ function loginByWeixin (data) {
 }
 
 export default {
-  getPublicEmailList,
+  getPublicLetters,
   loginByWeixin,
-  postEmail
+  sendLetter
 }
