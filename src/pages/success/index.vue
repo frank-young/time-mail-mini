@@ -30,7 +30,9 @@ export default {
   },
   methods: {
     toLetter () {
-      this.$router.push({path: '/pages/letter/main', isTab: true})
+      wx.reLaunch({
+        url: '/pages/letter/main'
+      })
     }
   }
 }

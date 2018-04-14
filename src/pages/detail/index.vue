@@ -1,21 +1,19 @@
 <template>
   <div class="letter">
     <div class="letter-main">
-      <div class="letter-li" v-for="letter in letters" :key="letter.id">
-        <div class="letter-box" @click="toDetail">
-          <div class="letter-avatar">
-            <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
+      <div class="letter-box" @click="">
+        <div class="letter-avatar">
+          <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
+        </div>
+        <div class="letter-content">
+          <div class="letter-title">
+            {{ letter.title }}
           </div>
-          <div class="letter-content">
-            <div class="letter-title">
-              {{ letter.title }}
-            </div>
-            <div class="letter-desc">
-              {{ letter.content }}
-            </div>
-            <div class="letter-meta">
-              {{ letter.like_count }} 人喜欢  {{ letter.comment_count }} 人评论
-            </div>
+          <div class="letter-desc">
+            {{ letter.content }}
+          </div>
+          <div class="letter-meta">
+            {{ letter.like_count }} 人喜欢  {{ letter.comment_count }} 人评论
           </div>
         </div>
       </div>
@@ -24,7 +22,7 @@
 </template>
 
 <script>
-import API from '@/api'
+// import API from '@/api'
 
 export default {
   components: {
@@ -35,22 +33,17 @@ export default {
     }
   },
   created () {
-    this.getPublicLetters()
+    // this.getPublicLetters()
   },
   methods: {
-    getPublicLetters () {
-      API.getPublicLetters({include: 'wxuser'})
-      .then(res => {
-        if (res.status_code === 200) {
-          this.letters = res.data.data
-        }
-      })
-    },
-    toDetail (e) {
-      wx.navigateTo({
-        url: '/pages/detail/main'
-      })
-    }
+    // getPublicLetters () {
+    //   API.getPublicLetters({include: 'wxuser'})
+    //   .then(res => {
+    //     if (res.status_code === 200) {
+    //       this.letters = res.data.data
+    //     }
+    //   })
+    // }
   }
 }
 </script>

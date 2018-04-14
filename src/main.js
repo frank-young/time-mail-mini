@@ -17,7 +17,8 @@ export default {
       '^pages/index/main',
       'pages/success/main',
       'pages/ucenter/main',
-      'pages/letter/main'
+      'pages/letter/main',
+      'pages/detail/main'
     ],
     window: {
       backgroundTextStyle: 'light',

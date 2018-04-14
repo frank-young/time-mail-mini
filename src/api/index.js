@@ -1,11 +1,11 @@
 const serverPath = 'http://127.0.0.1:9999/api/'
 
 let http = {
-  post (url, body = {}) {
+  post (url, params = {}) {
     return new Promise((resolve, reject) => {
       wx.request({
         url: serverPath + url,    // 拼接完整的url
-        data: body,
+        data: params,
         method: 'POST',
         header: {
           'content-type': 'application/json',
@@ -37,8 +37,8 @@ let http = {
   }
 }
 
-function getPublicLetters () {
-  return http.get('letter/list')
+function getPublicLetters (params) {
+  return http.get('letter/list', params)
 }
 
 function sendLetter (data) {

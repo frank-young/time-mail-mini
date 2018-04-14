@@ -15,7 +15,6 @@
     "less-loader": "^4.1.0",
     "moment": "^2.22.0",
     "mpvue": "^1.0.6",
-    "mpvue-router-patch": "^0.1.5",
     "validator.tool": "^1.0.10",
     "vuex": "^2.3.1"
   },

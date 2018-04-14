@@ -191,7 +191,9 @@ export default {
       this.isSending = false
       this.isDisabled = true
       this.configText.sendText = '寄送成功'
-      this.$router.push({ path: '/pages/success/main', reLaunch: true })
+      wx.reLaunch({
+        url: '/pages/success/main'
+      })
     },
     failSend () {
       this.isSending = false

@@ -1,16 +1,14 @@
 <template>
   <div>
     <ul class="container log-list">
-      <li v-for="e in emails" :key="e.id" class="log-item">
-        {{ e.title }}
-      </li>
+
     </ul>
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
-import API from '@/api'
+// import API from '@/api'
 
 export default {
   components: {
@@ -19,14 +17,10 @@ export default {
 
   data () {
     return {
-      emails: []
     }
   },
   created () {
-    API.getPublicLetters()
-    .then(res => {
-      this.emails = res.data.data
-    })
+
   }
 }
 </script>
