@@ -2,7 +2,7 @@
   <div class="letter">
     <div class="letter-main">
       <div class="letter-li" v-for="letter in letters" :key="letter.id">
-        <div class="letter-box" @click="toDetail">
+        <div class="letter-box" @click="toDetail(letter.id)">
           <div class="letter-avatar">
             <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
           </div>
@@ -46,9 +46,9 @@ export default {
         }
       })
     },
-    toDetail (e) {
+    toDetail (id) {
       wx.navigateTo({
-        url: '/pages/detail/main'
+        url: '/pages/detail/main?id=' + id
       })
     }
   }
@@ -98,6 +98,7 @@ export default {
   }
   &-meta {
     font-size: 12px;
+    color: #0D45E4;
   }
 }
 </style>

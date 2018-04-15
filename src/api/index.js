@@ -41,6 +41,10 @@ function getPublicLetters (params) {
   return http.get('letter/list', params)
 }
 
+function getLetter (params) {
+  return http.get('letter/show', params)
+}
+
 function sendLetter (data) {
   return http.post('letter/store', data)
 }
@@ -52,5 +56,6 @@ function loginByWeixin (data) {
 export default {
   getPublicLetters,
   loginByWeixin,
-  sendLetter
+  sendLetter,
+  getLetter
 }

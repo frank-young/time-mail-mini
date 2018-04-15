@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
@@ -38,6 +38,12 @@
 					"name": "浏览",
 					"pathName": "pages/letter/main",
 					"query": ""
+				},
+				{
+					"id": 2,
+					"name": "详情",
+					"pathName": "pages/detail/main",
+					"query": "id=1"
 				}
 			]
 		}

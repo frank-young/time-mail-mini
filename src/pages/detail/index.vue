@@ -1,20 +1,23 @@
 <template>
-  <div class="letter">
-    <div class="letter-main">
-      <div class="letter-box" @click="">
-        <div class="letter-avatar">
-          <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
+  <div class="detail">
+    <div class="detail-main">
+      <div class="detail-box">
+        <div class="detail-title">
+          {{ letter.title }}
         </div>
-        <div class="letter-content">
-          <div class="letter-title">
-            {{ letter.title }}
-          </div>
-          <div class="letter-desc">
+        <div class="detail-avatar">
+          <image class="detail-image" :src="letter.wxuser.data.avatar"></image>
+        </div>
+        <div class="detail-content">
+          <div class="detail-desc">
             {{ letter.content }}
           </div>
-          <div class="letter-meta">
+          <div class="detail-meta">
             {{ letter.like_count }} 人喜欢  {{ letter.comment_count }} 人评论
           </div>
+        </div>
+        <div class="detail-comment">
+
         </div>
       </div>
     </div>
@@ -22,47 +25,51 @@
 </template>
 
 <script>
-// import API from '@/api'
+import API from '@/api'
 
 export default {
   components: {
   },
   data () {
     return {
-      letters: []
+      letter: {
+        wxuser: {
+          data: {
+            avatar: ''
+          }
+        }
+      }
     }
   },
-  created () {
-    // this.getPublicLetters()
+  mounted () {
+    this.getLetter(this.$root.$mp.query.id)
   },
   methods: {
-    // getPublicLetters () {
-    //   API.getPublicLetters({include: 'wxuser'})
-    //   .then(res => {
-    //     if (res.status_code === 200) {
-    //       this.letters = res.data.data
-    //     }
-    //   })
-    // }
+    getLetter (id) {
+      API.getLetter({ id, include: 'wxuser' })
+      .then(res => {
+        if (res.status_code === 200) {
+          this.letter = res.data.data
+        }
+      })
+    }
   }
 }
 </script>
 
 <style lang="less">
-.letter {
+.detail {
   min-height: 100vh;
-  /* background-color: #eceff1; */
   &-main {
     padding: 30rpx;
   }
-  &-li {
-    margin-bottom: 30rpx;
-    box-shadow: 0 0 6px #eee;
-    border: 1rpx solid #eee;
-  }
   &-box {
-    padding: 30rpx;
-    display: flex;
+
+  }
+  &-title {
+    margin-bottom: 20rpx;
+    font-size: 36rpx;
+    color: #333;
   }
   &-avatar {
     flex: 0 0 100rpx;
@@ -80,10 +87,6 @@ export default {
   }
   &-content {
 
-  }
-  &-title {
-    font-size: 36rpx;
-    color: #333;
   }
   &-desc {
     font-size: 28rpx;

@@ -6,10 +6,10 @@
     <div class="letter-wrap">
       <form @submit="submit">
         <div class="form-group">
-          <input class="title" type="text" v-model="letter.title">
+          <input class="title" :placeholder="configText.titlePlaceholder" type="text" v-model="letter.title">
         </div>
         <div class="form-group">
-          <textarea v-model="letter.content" :placeholder="configText.emailPlaceholder" :focus="true" class="content" email-input>1</textarea>
+          <textarea v-model="letter.content" :placeholder="configText.letterPlaceholder" :focus="true" class="content" email-input>1</textarea>
         </div>
         <div class="form-group">
           <div class="select-title">到达时间</div>
@@ -71,11 +71,7 @@
         </div>
       </form>
     </div>
-    <div class="toast" v-show="isShow">
-      <div class="toast-content">
-        {{ toastMsg }}
-      </div>
-    </div>
+    <toast :toast-msg.sync="toastMsg" :is-show.sync="isShow"></toast>
   </div>
 </template>
 
@@ -83,6 +79,7 @@
 import moment from 'moment'
 import API from '@/api'
 import Validator from 'validator.tool'
+import Toast from '@/components/toast'
 
 export default {
   data () {
@@ -99,7 +96,8 @@ export default {
       // 默认配置文字
       configText: {
         tips: '写给未来自己的一封信',
-        emailPlaceholder: '写一些内容给未来的自己',
+        titlePlaceholder: '标题',
+        letterPlaceholder: '写一些内容给未来的自己',
         sendText: '寄送到未来'
       },
       // 时间选择
@@ -114,6 +112,9 @@ export default {
       isShow: false,
       toastMsg: ''
     }
+  },
+  components: {
+    Toast
   },
   computed: {
   },
@@ -340,26 +341,5 @@ export default {
   100%{
     background-position:0% 80%;
   }
-}
-.toast {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-}
-.toast-content {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 45px;
-  line-height: 45px;
-  padding: 0 30px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 14px;
 }
 </style>
