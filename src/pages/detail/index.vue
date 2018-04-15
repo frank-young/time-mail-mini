@@ -14,7 +14,7 @@
           </div>
           <div class="detail-meta">
             <div class="detail-like">
-              <like-btn @click="toggleLike" :is-like.sync="isLike" :count="letter.like_count"></like-btn>
+              <like-btn @click="toggleLike" :is-like.sync="isLike" :count.sync="letter.like_count"></like-btn>
             </div>
             <!-- {{ letter.comment_count }} 人评论 -->
           </div>
@@ -45,11 +45,13 @@ export default {
           }
         }
       },
-      isLike: false
+      isLike: false,
+      letterId: 0
     }
   },
   mounted () {
-    this.getLetter(this.$root.$mp.query.id)
+    this.letterId = this.$root.$mp.query.id
+    this.getLetter(this.letterId)
   },
   methods: {
     getLetter (id) {
@@ -57,13 +59,20 @@ export default {
       .then(res => {
         if (res.status_code === 200) {
           this.letter = res.data.data
+          this.isLike = this.letter.is_like === 1
         }
       })
     },
     toggleLike () {
       this.isLike = !this.isLike
       this.isLike ? this.letter.like_count++ : this.letter.like_count--
-      // this.letter.like_count += 1
+      this.isLike ? this.like() : this.dislike()
+    },
+    like () {
+      API.like({letter_id: this.letterId})
+    },
+    dislike () {
+      API.dislike({letter_id: this.letterId})
     }
   }
 }

@@ -26,6 +26,9 @@ let http = {
         url: serverPath + url,    // 拼接完整的url
         data: body,
         method: 'GET',
+        header: {
+          'token': Number(wx.getStorageSync('token'))
+        },
         success (res) {
           resolve(res.data)  // 把返回的数据传出去
         },
@@ -53,9 +56,19 @@ function loginByWeixin (data) {
   return http.post('auth/loginByWeixin', data)
 }
 
+function like (data) {
+  return http.post('letter/like/increment', data)
+}
+
+function dislike (data) {
+  return http.post('letter/like/decrement', data)
+}
+
 export default {
   getPublicLetters,
   loginByWeixin,
   sendLetter,
-  getLetter
+  getLetter,
+  like,
+  dislike
 }
