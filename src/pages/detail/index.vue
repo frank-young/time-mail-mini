@@ -13,7 +13,10 @@
             {{ letter.content }}
           </div>
           <div class="detail-meta">
-            {{ letter.like_count }} 人喜欢  {{ letter.comment_count }} 人评论
+            <div class="detail-like">
+              <like-btn @click="toggleLike" :is-like.sync="isLike" :count="letter.like_count"></like-btn>
+            </div>
+            <!-- {{ letter.comment_count }} 人评论 -->
           </div>
         </div>
         <div class="detail-comment">
@@ -26,19 +29,23 @@
 
 <script>
 import API from '@/api'
+import LikeBtn from '@/components/like-btn'
 
 export default {
   components: {
+    LikeBtn
   },
   data () {
     return {
       letter: {
+        like_count: 0,
         wxuser: {
           data: {
             avatar: ''
           }
         }
-      }
+      },
+      isLike: false
     }
   },
   mounted () {
@@ -52,6 +59,11 @@ export default {
           this.letter = res.data.data
         }
       })
+    },
+    toggleLike () {
+      this.isLike = !this.isLike
+      this.isLike ? this.letter.like_count++ : this.letter.like_count--
+      // this.letter.like_count += 1
     }
   }
 }
@@ -94,6 +106,11 @@ export default {
   }
   &-meta {
     font-size: 12px;
+    margin: 30rpx 0;
+  }
+  &-like {
+    // width: 400rpx;
+    display: inline-block;
   }
 }
 </style>
