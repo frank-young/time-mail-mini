@@ -64,11 +64,23 @@ function dislike (data) {
   return http.post('letter/like/decrement', data)
 }
 
+// 评论
+function getComments (params) {
+  return http.get('comment/list', params)
+}
+
+// 评论
+function addComment (data) {
+  return http.post('comment/store', data)
+}
+
 export default {
   getPublicLetters,
   loginByWeixin,
   sendLetter,
   getLetter,
   like,
-  dislike
+  dislike,
+  getComments,
+  addComment
 }

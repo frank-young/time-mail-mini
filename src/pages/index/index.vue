@@ -97,7 +97,7 @@ export default {
       configText: {
         tips: '写给未来自己的一封信',
         titlePlaceholder: '标题',
-        letterPlaceholder: '写一些内容给未来的自己',
+        letterPlaceholder: '一年后，我们一起见证奇迹！',
         sendText: '寄送到未来'
       },
       // 时间选择
