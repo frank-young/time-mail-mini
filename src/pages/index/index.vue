@@ -66,7 +66,7 @@
         <div class="form-group">
           <input class="title" type="text" placeholder="请输入手机号" v-model="letter.phone">
         </div>
-        <div class="form-group">
+        <div class="fixed-froup">
           <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{configText.sendText}} </button>
         </div>
       </form>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import miment from 'miment'
 import API from '@/api'
 import Validator from 'validator.tool'
 import Toast from '@/components/toast'
@@ -91,7 +91,7 @@ export default {
         is_public: 1,
         email: '',
         phone: '',
-        arrive_time: moment().add(1, 'years').format('YYYY-MM-DD')
+        arrive_time: miment().add(1, 'YYYY').format('YYYY-MM-DD')
       },
       // 默认配置文字
       configText: {
@@ -103,8 +103,8 @@ export default {
       // 时间选择
       arriveYear: 1,
       isShowDefaultYear: true,
-      startDate: moment().add(10, 'days').format('YYYY-MM-DD'),
-      endDate: moment().add(20, 'years').format('YYYY-MM-DD'),
+      startDate: miment().add(10, 'DD').format('YYYY-MM-DD'),
+      endDate: miment().add(20, 'YYYY').format('YYYY-MM-DD'),
       // 提交过程
       isSending: false,
       isDisabled: false,
@@ -122,7 +122,7 @@ export default {
     // 默认到达年份选择
     arriveYearChange (e) {
       this.arriveYear = Number(e.target.value)
-      this.letter.arrive_time = moment().add(this.arriveYear, 'years').format('YYYY-MM-DD')
+      this.letter.arrive_time = miment().add(this.arriveYear, 'YYYY').format('YYYY-MM-DD')
     },
     // 自定义到达日期选择
     arriveDateChange (e) {
@@ -132,7 +132,7 @@ export default {
     // 取消自定义选择日期
     cancelCustomerSelect () {
       this.isShowDefaultYear = true
-      this.letter.arrive_time = moment().add(1, 'years').format('YYYY-MM-DD')
+      this.letter.arrive_time = miment().add(1, 'YYYY').format('YYYY-MM-DD')
       this.arriveYear = 1
     },
     // 是否是公开邮件
@@ -229,7 +229,7 @@ export default {
     font-size: 40rpx;
   }
   .letter-wrap {
-    padding: 30rpx 40rpx;
+    padding: 30rpx 40rpx 160rpx 40rpx;
   }
   .form-group {
     margin-bottom: 30rpx;
@@ -324,6 +324,19 @@ export default {
   }
   .send-hover {
     background-color: #092f9c;
+    &:after {
+      display: none;
+    }
+  }
+  .fixed-froup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 15px;
+    background-color: #fff;
+    border-top: 1rpx solid #eee;
   }
 }
 .animate-background {

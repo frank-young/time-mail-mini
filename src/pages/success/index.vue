@@ -2,15 +2,23 @@
   <div class="success">
     <div class="success-box">
       <div class="success-icon">
-        <image class="success-image" src="/static/images/emoji-1.png" alt=""></image>
       </div>
       <div class="success-text">
-        寄送成功
+        寄送成功，信件将会准时到达
       </div>
       <div class="success-btn-group">
-        <button class="success-btn" type="button" @click="toLetter">
-          浏览公开信件
+        <button class="success-btn" type="button" @click="toIndex">
+          返回首页
         </button>
+      </div>
+      <div class="success-tips">
+        欢迎您成为时光邮件第一批用户❤️，为了做好服务，邀请您加入我们的社区👇，或者关注公众号：时光邮件
+      </div>
+      <div class="success-qrcode-text">
+        截图保存二维码
+      </div>
+      <div class="success-qrcode">
+        <image @click="saveImage" class="success-qrcode-image" src="/static/images/qrcode.jpg" alt=""></image>
       </div>
     </div>
   </div>
@@ -29,9 +37,16 @@ export default {
 
   },
   methods: {
-    toLetter () {
+    toIndex () {
       wx.reLaunch({
-        url: '/pages/letter/main'
+        url: '/pages/index/main'
+      })
+    },
+    saveImage () {
+      wx.saveImageToPhotosAlbum({
+        success (res) {
+          console.log(res)
+        }
       })
     }
   }
@@ -47,21 +62,43 @@ export default {
   }
   &-icon {
     text-align: center;
-    padding: 100rpx 0 50rpx;
+    padding: 40rpx 0 40rpx;
   }
   &-image {
-    width: 300rpx;
-    height: 300rpx;
+    width: 200rpx;
+    height: 200rpx;
     margin: 0 auto;
   }
   &-text {
     text-align: center;
+    font-size: 16px;
+    padding: 0 15px;
+    line-height: 1.7em;
   }
   &-btn-group {
-    padding: 40rpx;
+    padding: 30rpx;
   }
   &-btn {
 
+  }
+  &-tips {
+    padding: 30rpx;
+    font-size: 16px;
+    line-height: 1.7em;
+  }
+  &-qrcode {
+    text-align: center;
+    padding: 0 0 40rpx;
+  }
+  &-qrcode-image {
+    width: 500rpx;
+    height: 500rpx;
+    margin: 0 auto;
+  }
+  &-qrcode-text {
+    font-size: 14px;
+    text-align: center;
+    line-height: 20px;
   }
 }
 </style>
