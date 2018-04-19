@@ -4,7 +4,7 @@
       <div class="success-icon">
       </div>
       <div class="success-text">
-        寄送成功，信件将会准时到达
+        信件将会准时发送到您的邮箱～
       </div>
       <div class="success-btn-group">
         <button class="success-btn" type="button" @click="toIndex">
