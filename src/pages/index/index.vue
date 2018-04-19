@@ -61,10 +61,10 @@
           </radio-group>
         </div>
         <div class="form-group">
-          <input class="title" type="text" placeholder="请输入邮箱" v-model="letter.email">
+          <input class="title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入邮箱,信件将会发送到邮箱里" v-model="letter.email">
         </div>
         <div class="form-group">
-          <input class="title" type="text" placeholder="请输入手机号" v-model="letter.phone">
+          <input class="title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入手机号，用于提醒信件（保密不外泄）" v-model="letter.phone">
         </div>
         <div class="fixed-froup">
           <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{configText.sendText}} </button>
@@ -86,8 +86,8 @@ export default {
     return {
       userInfo: {},
       letter: {
-        title: '给2019年的自己😄',
-        content: '',
+        title: '一封来自' + miment().add(1, 'YYYY').format('YYYY年MM月DD日') + '的信件',
+        content: '未来的自己，',
         is_public: 1,
         email: '',
         phone: '',
@@ -97,7 +97,7 @@ export default {
       configText: {
         tips: '写给未来自己的一封信',
         titlePlaceholder: '标题',
-        letterPlaceholder: '一年后，我们一起见证奇迹！',
+        letterPlaceholder: '',
         sendText: '寄送到未来'
       },
       // 时间选择
@@ -117,6 +117,12 @@ export default {
     Toast
   },
   computed: {
+  },
+  mounted () {
+    this.userInfo = wx.getStorageSync('userInfo')
+    if (typeof this.userInfo.nickname !== 'undefined') {
+      this.letter.content = `未来的${this.userInfo.nickname}，`
+    }
   },
   methods: {
     // 默认到达年份选择
@@ -209,9 +215,6 @@ export default {
         this.isShow = false
       }, 2000)
     }
-  },
-  created () {
-    this.userInfo = wx.getStorageSync('userInfo')
   }
 }
 </script>

@@ -1,4 +1,5 @@
 const serverPath = 'http://127.0.0.1:9999/api/'
+// const serverPath = 'https://time-mail.nanafly.com/api/'
 
 let http = {
   post (url, params = {}) {
