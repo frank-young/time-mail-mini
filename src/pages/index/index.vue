@@ -9,7 +9,7 @@
           <input class="title" :placeholder="configText.titlePlaceholder" type="text" v-model="letter.title">
         </div>
         <div class="form-group">
-          <textarea :maxlength="-1" v-model="letter.content" :placeholder="configText.letterPlaceholder" :focus="true" class="content" email-input>1</textarea>
+          <textarea :maxlength="-1" v-model="letter.content" :placeholder="configText.letterPlaceholder" class="content"></textarea>
         </div>
         <div class="form-group">
           <div class="select-title">到达时间</div>
