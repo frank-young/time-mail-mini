@@ -224,6 +224,13 @@ export default {
         this.isShow = false
       }, 2000)
     }
+  },
+  onShareAppMessage: function () {
+    return {
+      title: '给10年后的自己写一封信如何？',
+      path: '/pages/index/main',
+      imageUrl: '/static/images/bg.jpg'
+    }
   }
 }
 </script>

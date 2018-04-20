@@ -24,16 +24,13 @@
         <image @click="saveImage" class="success-qrcode-image" src="/static/images/qrcode.jpg" alt=""></image>
       </div>
     </div>
-    <toast :toast-msg.sync="toastMsg" :is-show.sync="isShow"></toast>
   </div>
 </template>
 
 <script>
-import Toast from '@/components/toast'
 
 export default {
   components: {
-    Toast
   },
   data () {
     return {
@@ -42,7 +39,6 @@ export default {
     }
   },
   created () {
-
   },
   methods: {
     toIndex () {
@@ -58,20 +54,17 @@ export default {
       })
     },
     copyCtrl () {
-      let that = this
       wx.setClipboardData({
         data: '时光邮件',
-        success () {
-          that.show('复制成功')
-        }
+        success () {}
       })
-    },
-    show (msg) {
-      this.isShow = true
-      this.toastMsg = msg
-      setTimeout(() => {
-        this.isShow = false
-      }, 2000)
+    }
+  },
+  onShareAppMessage: function () {
+    return {
+      title: '给10年后的自己写一封信如何？',
+      path: '/pages/index/main',
+      imageUrl: '/static/images/bg.jpg'
     }
   }
 }
