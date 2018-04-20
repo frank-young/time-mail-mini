@@ -12,7 +12,10 @@
         </button>
       </div>
       <div class="success-tips">
-        欢迎您成为时光邮件第一批用户❤️，为了做好服务，邀请您加入我们的社区👇，或者关注公众号：时光邮件
+        欢迎您成为时光邮件第一批用户❤️，为了做好服务，邀请您加入我们的社区👇，关注公众号：时光邮件
+        <div class="success-tips-btn" @click="copyCtrl">
+          点击复制
+        </div>
       </div>
       <div class="success-qrcode-text">
         截图保存二维码
@@ -21,16 +24,21 @@
         <image @click="saveImage" class="success-qrcode-image" src="/static/images/qrcode.jpg" alt=""></image>
       </div>
     </div>
+    <toast :toast-msg.sync="toastMsg" :is-show.sync="isShow"></toast>
   </div>
 </template>
 
 <script>
+import Toast from '@/components/toast'
+
 export default {
   components: {
+    Toast
   },
   data () {
     return {
-
+      isShow: false,
+      toastMsg: ''
     }
   },
   created () {
@@ -48,6 +56,22 @@ export default {
           console.log(res)
         }
       })
+    },
+    copyCtrl () {
+      let that = this
+      wx.setClipboardData({
+        data: '时光邮件',
+        success () {
+          that.show('复制成功')
+        }
+      })
+    },
+    show (msg) {
+      this.isShow = true
+      this.toastMsg = msg
+      setTimeout(() => {
+        this.isShow = false
+      }, 2000)
     }
   }
 }
@@ -79,7 +103,10 @@ export default {
     padding: 30rpx;
   }
   &-btn {
-
+    padding: 15rpx;
+    background-color: #fff;
+    color: #666;
+    font-size: 14px;
   }
   &-tips {
     padding: 30rpx;
@@ -99,6 +126,15 @@ export default {
     font-size: 14px;
     text-align: center;
     line-height: 20px;
+  }
+  &-tips-btn {
+    display: inline-block;
+    border: 1px solid #eee;
+    padding: 0 20rpx;
+    border-radius: 20px;
+    background-color: #fff;
+    color: #333;
+    font-size: 10px;
   }
 }
 </style>

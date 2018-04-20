@@ -9,7 +9,7 @@
           <input class="title" :placeholder="configText.titlePlaceholder" type="text" v-model="letter.title">
         </div>
         <div class="form-group">
-          <textarea v-model="letter.content" :placeholder="configText.letterPlaceholder" :focus="true" class="content" email-input>1</textarea>
+          <textarea :maxlength="-1" v-model="letter.content" :placeholder="configText.letterPlaceholder" :focus="true" class="content" email-input>1</textarea>
         </div>
         <div class="form-group">
           <div class="select-title">到达时间</div>
@@ -86,7 +86,7 @@ export default {
     return {
       userInfo: {},
       letter: {
-        title: '一封来自' + miment().add(1, 'YYYY').format('YYYY年MM月DD日') + '的信件',
+        title: '一封来自' + miment().format('YYYY年MM月DD日') + '的信件',
         content: '未来的自己，',
         is_public: 1,
         email: '',
@@ -103,7 +103,7 @@ export default {
       // 时间选择
       arriveYear: 1,
       isShowDefaultYear: true,
-      startDate: miment().add(10, 'DD').format('YYYY-MM-DD'),
+      startDate: miment().add(1, 'MM').format('YYYY-MM-DD'),
       endDate: miment().add(20, 'YYYY').format('YYYY-MM-DD'),
       // 提交过程
       isSending: false,
@@ -146,21 +146,22 @@ export default {
       this.letter.is_public = Number(e.target.value)
     },
     // 提交
-    submit () {
+    async submit () {
       let res = this.validate(this.letter)
       if (!res.bool) {
         this.show(res.msg)
         return
       }
 
+      this.letter.arrive_time = this.letter.arrive_time + miment().format(' hh:mm:ss')
       this.startSend()
-      API.sendLetter(this.letter)
-      .then(res => {
+      try {
+        await API.sendLetter(this.letter)
         this.successSend()
-      })
-      .catch(() => {
+      } catch (e) {
+        console.log(e)
         this.failSend()
-      })
+      }
     },
     // 验证
     validate (data) {
@@ -196,8 +197,16 @@ export default {
     },
     successSend () {
       this.isSending = false
-      this.isDisabled = true
-      this.configText.sendText = '寄送成功'
+      this.isDisabled = false
+      this.letter = {
+        title: '一封来自' + miment().format('YYYY年MM月DD日') + '的信件',
+        content: '未来的自己，',
+        is_public: 1,
+        email: '',
+        phone: '',
+        arrive_time: miment().add(1, 'YYYY').format('YYYY-MM-DD')
+      }
+      this.configText.sendText = '寄送到未来'
       wx.reLaunch({
         url: '/pages/success/main'
       })
