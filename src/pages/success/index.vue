@@ -4,7 +4,7 @@
       <div class="success-icon">
       </div>
       <div class="success-text">
-        信件将会准时发送到您的邮箱～
+        {{ configText.success_tip }}
       </div>
       <div class="success-btn-group">
         <button class="success-btn" type="button" @click="toIndex">
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import API from '@/api'
 
 export default {
   components: {
@@ -35,12 +36,25 @@ export default {
   data () {
     return {
       isShow: false,
-      toastMsg: ''
+      toastMsg: '',
+      configText: {
+        success_tip: '',
+        share_message: '给10年后的自己写一封信如何？'
+      }
     }
   },
   created () {
+    this.getPrompt()
   },
   methods: {
+    async getPrompt () {
+      try {
+        const res = await API.getPrompt()
+        this.configText = res.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
     toIndex () {
       wx.reLaunch({
         url: '/pages/index/main'
@@ -62,7 +76,7 @@ export default {
   },
   onShareAppMessage: function () {
     return {
-      title: '给10年后的自己写一封信如何？',
+      title: this.configText.share_message,
       path: '/pages/index/main',
       imageUrl: '/static/images/bg.jpg'
     }

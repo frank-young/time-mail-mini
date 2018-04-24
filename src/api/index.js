@@ -76,6 +76,11 @@ function addComment (data) {
   return http.post('comment/store', data)
 }
 
+// 获取额外信息
+function getPrompt (data) {
+  return http.get('prompt/show', data)
+}
+
 export default {
   getPublicLetters,
   loginByWeixin,
@@ -84,5 +89,6 @@ export default {
   like,
   dislike,
   getComments,
-  addComment
+  addComment,
+  getPrompt
 }

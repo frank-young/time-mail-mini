@@ -67,7 +67,7 @@
           <input class="title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入手机号，用于提醒信件（保密不外泄）" v-model="letter.phone">
         </div>
         <div class="fixed-froup">
-          <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{configText.sendText}} </button>
+          <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{ sendText }} </button>
         </div>
       </form>
     </div>
@@ -98,8 +98,9 @@ export default {
         tips: '写给未来自己的一封信',
         titlePlaceholder: '标题',
         letterPlaceholder: '',
-        sendText: '寄送到未来'
+        share_message: '给10年后的自己写一封信如何？'
       },
+      sendText: '寄送到未来',
       // 时间选择
       arriveYear: 1,
       isShowDefaultYear: true,
@@ -118,6 +119,9 @@ export default {
   },
   computed: {
   },
+  created () {
+    this.getPrompt()
+  },
   mounted () {
     this.userInfo = wx.getStorageSync('userInfo')
     if (typeof this.userInfo.nickname !== 'undefined') {
@@ -125,6 +129,14 @@ export default {
     }
   },
   methods: {
+    async getPrompt () {
+      try {
+        const res = await API.getPrompt()
+        this.configText = res.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
     // 默认到达年份选择
     arriveYearChange (e) {
       this.arriveYear = Number(e.target.value)
@@ -193,7 +205,7 @@ export default {
     startSend () {
       this.isSending = true
       this.isDisabled = true
-      this.configText.sendText = '寄送中'
+      this.sendText = '寄送中'
     },
     successSend () {
       this.isSending = false
@@ -206,7 +218,7 @@ export default {
         phone: '',
         arrive_time: miment().add(1, 'YYYY').format('YYYY-MM-DD')
       }
-      this.configText.sendText = '寄送到未来'
+      this.sendText = '寄送到未来'
       wx.reLaunch({
         url: '/pages/success/main'
       })
@@ -214,7 +226,7 @@ export default {
     failSend () {
       this.isSending = false
       this.isDisabled = false
-      this.configText.sendText = '寄送失败，重新寄送'
+      this.sendText = '寄送失败，重新寄送'
     },
     // ToastPlugin
     show (msg) {
@@ -227,7 +239,7 @@ export default {
   },
   onShareAppMessage: function () {
     return {
-      title: '给10年后的自己写一封信如何？',
+      title: this.configText.share_message,
       path: '/pages/index/main',
       imageUrl: '/static/images/bg.jpg'
     }
