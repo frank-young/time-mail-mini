@@ -132,7 +132,9 @@ export default {
     async getPrompt () {
       try {
         const res = await API.getPrompt()
-        this.configText = res.data
+        if (res.data !== null) {
+          this.configText = res.data
+        }
       } catch (e) {
         console.log(e)
       }
