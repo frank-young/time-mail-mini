@@ -8,7 +8,6 @@
 
 <script>
 import card from '@/components/card'
-// import API from '@/api'
 
 export default {
   components: {
