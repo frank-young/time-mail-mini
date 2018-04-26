@@ -66,7 +66,7 @@
         <div class="form-group">
           <input class="title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入手机号，用于提醒信件（保密不外泄）" v-model="letter.phone">
         </div>
-        <div class="fixed-froup">
+        <div class="form-froup">
           <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{ sendText }} </button>
         </div>
       </form>
@@ -262,7 +262,7 @@ export default {
     font-size: 40rpx;
   }
   .letter-wrap {
-    padding: 30rpx 40rpx 160rpx 40rpx;
+    padding: 30rpx 40rpx 40rpx 40rpx;
   }
   .form-group {
     margin-bottom: 30rpx;
@@ -350,9 +350,13 @@ export default {
     letter-spacing: 5rpx;
     background-color: #0D45E4;
     border-color: transparent;
+    border-radius: 40px;
     color: #fff;
     &[disabled] {
         opacity: .5;
+    }
+    &:after {
+      display: none;
     }
   }
   .send-hover {
