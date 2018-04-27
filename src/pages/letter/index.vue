@@ -8,13 +8,18 @@
           </div>
           <div class="letter-content">
             <div class="letter-title">
-              {{ letter.title }}
+              {{ letter.meta }}
             </div>
             <div class="letter-desc">
-              {{ letter.content }}
+              {{ letter.description }}
             </div>
             <div class="letter-meta">
-              {{ letter.like_count }} 人喜欢  {{ letter.comment_count }} 人评论
+              <div class="letter-meta-left">
+                  写于{{ letter.create_date }}
+              </div>
+              <div class="letter-meta-right">
+                {{ letter.like_count }} ❤️
+              </div>
             </div>
           </div>
         </div>
@@ -25,6 +30,7 @@
 
 <script>
 import API from '@/api'
+// import miment from 'miment'
 
 export default {
   components: {
@@ -46,6 +52,7 @@ export default {
         }
       })
     },
+    // 跳转详情
     toDetail (id) {
       wx.navigateTo({
         url: '/pages/detail/main?id=' + id
@@ -60,44 +67,49 @@ export default {
   min-height: 100vh;
   /* background-color: #eceff1; */
   &-main {
-    padding: 30rpx;
   }
   &-li {
-    margin-bottom: 30rpx;
-    box-shadow: 0 0 6px #eee;
-    border: 1rpx solid #eee;
+    padding: 30rpx;
+    border-bottom: 1rpx solid #eee;
   }
   &-box {
-    padding: 30rpx;
     display: flex;
   }
   &-avatar {
-    flex: 0 0 100rpx;
-    width: 100rpx;
-    height: 100rpx;
+    flex: 0 0 90rpx;
+    width: 90rpx;
+    height: 90rpx;
     margin-right: 30rpx;
     padding: 2rpx;
-    border: 1rpx solid #eee;
-    border-radius: 50%;
   }
   &-image {
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 50%;
+    width: 90rpx;
+    height: 90rpx;
   }
   &-content {
-
+    width: 100%;
   }
   &-title {
-    font-size: 36rpx;
-    color: #333;
+    font-size: 28rpx;
+    color: #888;
   }
   &-desc {
     font-size: 28rpx;
+    line-height: 1.5em;
     padding: 10rpx 0;
   }
   &-meta {
+    display: flex;
     font-size: 12px;
+
+  }
+  &-meta-left {
+    flex: 1;
+    color: #999;
+  }
+  &-meta-right {
+    flex: 1;
+    text-align: right;
     color: #0D45E4;
   }
 }
