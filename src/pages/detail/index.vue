@@ -5,8 +5,18 @@
         <div class="detail-title">
           {{ letter.title }}
         </div>
-        <div class="detail-avatar">
-          <image class="detail-image" :src="letter.wxuser.data.avatar"></image>
+        <div class="detail-auth">
+          <div class="detail-auth-avatar">
+            <image class="detail-image" :src="letter.wxuser.data.avatar"></image>
+          </div>
+          <div class="detail-auth-name">
+            <div class="">
+              {{ letter.wxuser.data.nickname }}
+            </div>
+            <div class="detail-auth-meta">
+              写于{{ letter.create_date }},{{ letter.meta }}
+            </div>
+          </div>
         </div>
         <div class="detail-content">
           <div class="detail-desc">
@@ -52,7 +62,7 @@
       </div>
     </div>
     <div class="comment-add">
-      <input v-model="commentContent" placeholder="有感而发～" class="comment-input" type="text"></input>
+      <input v-model="commentContent" placeholder="支持ta的梦想～" class="comment-input" type="text"></input>
       <div class="comment-btn" @click="addComment">发送</div>
     </div>
     <toast :toast-msg.sync="toastMsg" :is-show.sync="isShow"></toast>
@@ -147,22 +157,37 @@ export default {
     font-size: 36rpx;
     color: #333;
   }
-  &-avatar {
-    flex: 0 0 100rpx;
-    width: 100rpx;
-    height: 100rpx;
+  &-auth {
+    width: 100%;
+    display: flex;
+    padding-bottom: 5px;
+  }
+  &-auth-avatar {
+    flex: 0 0 80rpx;
+    width: 80rpx;
+    height: 80rpx;
     margin-right: 30rpx;
     padding: 2rpx;
     border: 1rpx solid #eee;
-    border-radius: 50%;
   }
   &-image {
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 50%;
+    width: 80rpx;
+    height: 80rpx;
+  }
+  &-auth-name {
+    flex: 1;
+    font-size: 14px;
+  }
+  &-auth-meta {
+    padding: 5px 0;
+    color: #999;
+    font-size: 12px;
   }
   &-content {
-
+    padding-bottom: 10px;
+    line-height: 1.7em;
+    font-size: 14px;
+    text-indent: 2em;
   }
   &-desc {
     font-size: 28rpx;
@@ -195,7 +220,7 @@ export default {
   &-box {
     position: relative;
     display: flex;
-    padding: 15px 0;
+    padding: 15px 0 0 0;
   }
   &-avatar {
     flex: 0 0 40px;
@@ -213,6 +238,9 @@ export default {
     flex: 1;
     padding-left: 15px;
     border-bottom: 1rpx solid #eee;
+    &:last-of-type {
+      border: none;
+    }
   }
   &-name {
     color: #666;
@@ -230,7 +258,7 @@ export default {
   &-meta {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 15px;
     color: #888;
     font-size: 12px;
   }

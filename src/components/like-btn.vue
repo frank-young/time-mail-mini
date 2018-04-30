@@ -45,7 +45,7 @@ export default {
 .like {
   &-group {
     position: relative;
-    padding: 26rpx 50rpx 26rpx 105rpx;
+    padding: 26rpx 50rpx 26rpx 20rpx;
     border: 1rpx solid #EA6F5A;
     border-radius: 80rpx;
     color: #EA6F5A;
@@ -83,7 +83,6 @@ export default {
   }
   &-btn {
     display: inline-block;
-    margin-right: 10px;
     padding-right: 10px;
     border-right: 1rpx solid #EA6F5A;
   }

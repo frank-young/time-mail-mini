@@ -95,7 +95,7 @@ export default {
       },
       // 默认配置文字
       configText: {
-        tips: '写给未来自己的一封信',
+        tips: '把梦想寄给未来',
         titlePlaceholder: '标题',
         letterPlaceholder: '',
         share_message: '给10年后的自己写一封信如何？'
@@ -260,6 +260,7 @@ export default {
     background-color: #0D45E4;
     // background: linear-gradient(180deg, #0D45E4, #3D45E4);
     font-size: 40rpx;
+    letter-spacing: 8px;
   }
   .letter-wrap {
     padding: 30rpx 40rpx 40rpx 40rpx;

@@ -1,24 +1,38 @@
 <template>
   <div class="letter">
+    <div class="tips">
+      {{ configText.tips }}
+    </div>
     <div class="letter-main">
-      <div class="letter-li" v-for="letter in letters" :key="letter.id">
-        <div class="letter-box" @click="toDetail(letter.id)">
-          <div class="letter-avatar">
-            <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
-          </div>
-          <div class="letter-content">
-            <div class="letter-title">
-              {{ letter.meta }}
+      <div class="letter-empty" v-if="letters.length === 0">
+        <image class="letter-empty-icon" src="/static/images/empty-letter.png"></image>
+        <div class="">
+          暂时没有公开信件
+        </div>
+      </div>
+      <div class="letter-ul" v-else>
+        <div class="letter-li" v-for="letter in letters" :key="letter.id">
+          <div class="letter-box" @click="toDetail(letter.id)">
+            <div class="letter-avatar">
+              <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
             </div>
-            <div class="letter-desc">
-              {{ letter.description }}
-            </div>
-            <div class="letter-meta">
-              <div class="letter-meta-left">
-                  写于{{ letter.create_date }}
+            <div class="letter-content">
+              <div class="letter-title">
+                {{ letter.meta }}
               </div>
-              <div class="letter-meta-right">
-                {{ letter.like_count }} ❤️
+              <div class="letter-desc">
+                {{ letter.description }}
+              </div>
+              <div class="letter-meta">
+                <div class="letter-meta-left">
+                    写于{{ letter.create_date }}
+                </div>
+                <div class="letter-meta-right">
+                  <image class="letter-meta-right-icon" src="/static/images/heart.png"></image>
+                  <div class="letter-meta-right-text">
+                    {{ letter.like_count }} 人喜欢
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -37,7 +51,10 @@ export default {
   },
   data () {
     return {
-      letters: []
+      letters: [],
+      configText: {
+        tips: '阅读别人的梦想'
+      }
     }
   },
   created () {
@@ -64,6 +81,16 @@ export default {
 
 <style lang="less">
 .letter {
+  .tips {
+    padding: 30rpx 100rpx;
+    line-height: 1.7em;
+    text-align: center;
+    color: #fff;
+    background-color: #0D45E4;
+    // background: linear-gradient(180deg, #0D45E4, #3D45E4);
+    font-size: 40rpx;
+    letter-spacing: 8px;
+  }
   min-height: 100vh;
   /* background-color: #eceff1; */
   &-main {
@@ -101,7 +128,6 @@ export default {
   &-meta {
     display: flex;
     font-size: 12px;
-
   }
   &-meta-left {
     flex: 1;
@@ -110,7 +136,32 @@ export default {
   &-meta-right {
     flex: 1;
     text-align: right;
-    color: #0D45E4;
+  }
+  &-meta-right-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+  &-meta-right-text {
+    position: relative;
+    top: -6px;
+    display: inline-block;
+    font-size: 12px;
+    color: #888;
+  }
+  &-empty {
+    width: 120px;
+    height: 120px;
+    margin: 100px auto;
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+  }
+  &-empty-icon {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
   }
 }
 </style>

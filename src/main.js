@@ -26,27 +26,27 @@ export default {
       navigationBarTextStyle: 'white'
     },
     tabBar: {
-      backgroundColor: '#fafafa',
-      borderStyle: 'white',
-      selectedColor: '#e02f25',
+      backgroundColor: '#ffffff',
+      borderStyle: 'gary',
+      selectedColor: '#0D45E4',
       color: '#666',
       list: [
         {
           pagePath: 'pages/index/main',
-          iconPath: 'static/images/icon/ic_menu_choice_nor.png',
-          selectedIconPath: 'static/images/icon/ic_menu_choice_pressed.png',
+          iconPath: 'static/images/icon/edit.png',
+          selectedIconPath: 'static/images/icon/edit-hover.png',
           text: '写'
         },
         {
           pagePath: 'pages/letter/main',
-          iconPath: 'static/images/icon/ic_menu_sort_nor.png',
-          selectedIconPath: 'static/images/icon/ic_menu_sort_pressed.png',
+          iconPath: 'static/images/icon/find.png',
+          selectedIconPath: 'static/images/icon/find-hover.png',
           text: '读'
         },
         {
           pagePath: 'pages/ucenter/main',
-          iconPath: 'static/images/icon/ic_menu_me_nor.png',
-          selectedIconPath: 'static/images/icon/ic_menu_me_pressed.png',
+          iconPath: 'static/images/icon/user.png',
+          selectedIconPath: 'static/images/icon/user-hover.png',
           text: '我'
         }
       ]
