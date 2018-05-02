@@ -62,7 +62,7 @@ export default {
         extraData: {
           id: '28278'
         },
-        envVersion: 'develop',
+        envVersion: 'trial',
         success (res) {
           // 打开成功
         }
