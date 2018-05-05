@@ -54,7 +54,6 @@ export default {
   },
   methods: {
     toMyLetter () {
-      console.log('===')
     },
     toRoast () {
       wx.navigateToMiniProgram({
