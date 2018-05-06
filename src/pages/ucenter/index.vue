@@ -63,7 +63,6 @@ export default {
         },
         envVersion: 'trial',
         success (res) {
-          // 打开成功
         }
       })
     }
