@@ -54,6 +54,15 @@ export default {
   },
   methods: {
     toMyLetter () {
+      wx.showModal({
+        title: '提示',
+        content: '暂时无法查看',
+        success: function(res) {
+          if (res.confirm) {
+          } else if (res.cancel) {
+          }
+        }
+      })
     },
     toRoast () {
       wx.navigateToMiniProgram({
@@ -61,7 +70,7 @@ export default {
         extraData: {
           id: '28278'
         },
-        envVersion: 'trial',
+        envVersion: 'release',
         success (res) {
         }
       })
