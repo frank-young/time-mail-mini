@@ -1,13 +1,13 @@
 <template>
   <div class="letter">
     <div class="tips">
-      {{ configText.tips }}
+      {{ configText.text1 }}
     </div>
     <div class="letter-main">
       <div class="letter-empty" v-if="letters.length === 0">
         <image class="letter-empty-icon" src="/static/images/empty-letter.png"></image>
         <div class="">
-          暂时没有公开信件
+
         </div>
       </div>
       <div class="letter-ul" v-else>
@@ -47,33 +47,63 @@ import API from '@/api'
 // import miment from 'miment'
 
 export default {
-  components: {
-  },
   data () {
     return {
       letters: [],
       configText: {
-        tips: '阅读别人的梦想'
-      }
+        text1: ''
+      },
+      page: {
+        page: 1,
+        page_size: 15
+      },
+      loading: false
     }
   },
-  created () {
+  onShow () {
+    this.page.page = 1
+    this.letters = []
     this.getPublicLetters()
   },
+  onPullDownRefresh () {
+    this.page.page = 1
+    this.letters = []
+    this.getPublicLetters()
+    wx.stopPullDownRefresh()
+  },
+  onReachBottom () {
+    this.getPublicLetters()
+  },
+  created () {
+    this.getPrompt()
+  },
   methods: {
-    getPublicLetters () {
-      API.getPublicLetters({include: 'wxuser'})
-      .then(res => {
-        if (res.status_code === 200) {
-          this.letters = res.data.data
+    async getPublicLetters () {
+      try {
+        const res = await API.getPublicLetters({include: 'wxuser', ...this.page})
+        if (res.status_code === 200 && res.data.data.length !== 0) {
+          this.letters = [...this.letters, ...res.data.data]
+          this.page.page += 1
         }
-      })
+      } catch (e) {
+        console.log(e)
+      }
     },
     // 跳转详情
     toDetail (id) {
       wx.navigateTo({
         url: '/pages/detail/main?id=' + id
       })
+    },
+    async getPrompt () {
+      try {
+        const res = await API.getPrompt()
+        if (res.data !== null) {
+          this.configText = res.data
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

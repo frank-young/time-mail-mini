@@ -57,7 +57,7 @@ export default {
       wx.showModal({
         title: '提示',
         content: '暂时无法查看',
-        success: function(res) {
+        success (res) {
           if (res.confirm) {
           } else if (res.cancel) {
           }
@@ -71,8 +71,7 @@ export default {
           id: '28278'
         },
         envVersion: 'release',
-        success (res) {
-        }
+        success (res) {}
       })
     }
   }

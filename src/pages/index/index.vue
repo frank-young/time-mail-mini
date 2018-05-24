@@ -321,7 +321,9 @@ export default {
     display: block;
     flex: 1;
     .active {
+      transition: all .3s;
       background-color: #7A7881;
+      border-color: #7A7881;
       color: #fff;
     }
   }
