@@ -35,19 +35,19 @@ export default {
           pagePath: 'pages/index/main',
           iconPath: 'static/images/icon/edit.png',
           selectedIconPath: 'static/images/icon/edit-hover.png',
-          text: '写'
+          text: '写信'
         },
         {
           pagePath: 'pages/letter/main',
           iconPath: 'static/images/icon/find.png',
           selectedIconPath: 'static/images/icon/find-hover.png',
-          text: '读'
+          text: '发现'
         },
         {
           pagePath: 'pages/ucenter/main',
           iconPath: 'static/images/icon/user.png',
           selectedIconPath: 'static/images/icon/user-hover.png',
-          text: '我'
+          text: '我的'
         }
       ]
     }
