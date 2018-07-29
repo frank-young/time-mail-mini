@@ -1,8 +1,6 @@
 <template>
   <div class="letter">
-    <div class="tips">
-      {{ configText.text1 }}
-    </div>
+
     <div class="letter-main">
       <div class="letter-empty" v-if="letters.length === 0">
         <image class="letter-empty-icon" src="/static/images/empty-letter.png"></image>
@@ -109,7 +107,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .letter {
   .tips {
     padding: 30rpx 100rpx;
