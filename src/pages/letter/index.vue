@@ -1,40 +1,37 @@
 <template>
   <div class="letter">
-
-    <div class="letter-main">
-      <div class="letter-empty" v-if="letters.length === 0">
-        <image class="letter-empty-icon" src="/static/images/empty-letter.png"></image>
-        <div class="">
-
+    <div class="header">
+      <div class="letter-header" @click="toUcenterInfo">
+        <div class="letter-header-avatar">
+          <image class="letter-header-image" :src="userInfo.avatar"></image>
+        </div>
+        <div class="letter-header-name">
+          {{ userInfo.nickname }}
         </div>
       </div>
-      <div class="letter-ul" v-else>
+    </div>
+    <div class="letter-sub-title">
+      <image class="letter-sub-title-image" src="/static/images/icon/edit-hover.png"></image>
+      公开信件
+    </div>
+    <div class="letter-main">
+      <div class="letter-ul">
         <div class="letter-li" v-for="letter in letters" :key="letter.id">
-          <div class="letter-box" @click="toDetail(letter.id)">
-            <div class="letter-avatar">
-              <image class="letter-image" :src="letter.wxuser.data.avatar"></image>
-            </div>
-            <div class="letter-content">
-              <div class="letter-title">
-                {{ letter.meta }}
-              </div>
-              <div class="letter-desc">
-                {{ letter.description }}
-              </div>
-              <div class="letter-meta">
-                <div class="letter-meta-left">
-                    写于{{ letter.create_date }}
-                </div>
-                <div class="letter-meta-right">
-                  <image class="letter-meta-right-icon" src="/static/images/heart.png"></image>
-                  <div class="letter-meta-right-text">
-                    {{ letter.like_count }} 人喜欢
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="letter-content">
+            {{ letter.content }}
+          </div>
+          <div class="letter-meta">
+            寄往{{ letter.arrive_date }}年
           </div>
         </div>
+        <div v-if="loading || isLastPage" class="letter-loading">
+          {{ loadingText }}
+        </div>
+      </div>
+    </div>
+    <div class="letter-btn-group">
+      <div class="letter-btn" @click="toWrite">
+        我也要写
       </div>
     </div>
   </div>
@@ -42,20 +39,18 @@
 
 <script>
 import API from '@/api'
-// import miment from 'miment'
 
 export default {
   data () {
     return {
       letters: [],
-      configText: {
-        text1: ''
-      },
       page: {
         page: 1,
         page_size: 15
       },
-      loading: false
+      loading: false,
+      isLastPage: false,
+      loadingText: '玩命加载中...'
     }
   },
   onShow () {
@@ -66,6 +61,7 @@ export default {
   onPullDownRefresh () {
     this.page.page = 1
     this.letters = []
+    this.isLastPage = false
     this.getPublicLetters()
     wx.stopPullDownRefresh()
   },
@@ -73,123 +69,140 @@ export default {
     this.getPublicLetters()
   },
   created () {
-    this.getPrompt()
+  },
+  computed: {
+    userInfo () {
+      return wx.getStorageSync('userInfo')
+    }
   },
   methods: {
     async getPublicLetters () {
+      if (this.loading) return
       try {
+        this._isLoading()
         const res = await API.getPublicLetters({include: 'wxuser', ...this.page})
-        if (res.status_code === 200 && res.data.data.length !== 0) {
+        this.loading = false
+        if (res.status && res.data.data.length) {
           this.letters = [...this.letters, ...res.data.data]
           this.page.page += 1
+        } else {
+          this._isLastPage()
         }
       } catch (e) {
         console.log(e)
       }
     },
-    // 跳转详情
-    toDetail (id) {
+    toWrite () {
       wx.navigateTo({
-        url: '/pages/detail/main?id=' + id
+        url: '/pages/index/main'
       })
     },
-    async getPrompt () {
-      try {
-        const res = await API.getPrompt()
-        if (res.data !== null) {
-          this.configText = res.data
-        }
-      } catch (e) {
-        console.log(e)
-      }
+    toUcenterInfo () {
+      wx.navigateTo({
+        url: '/pages/ucenter/main'
+      })
+    },
+    _isLoading () {
+      this.loading = true
+      this.loadingText = '玩命加载中...'
+    },
+    _isLastPage () {
+      this.isLastPage = true
+      this.loadingText = '已没有更多的梦想了～'
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+@import '~@/asset/less/style.less';
 .letter {
-  .tips {
-    padding: 30rpx 100rpx;
-    line-height: 1.7em;
-    text-align: center;
-    color: #fff;
-    background-color: #0D45E4;
-    // background: linear-gradient(180deg, #0D45E4, #3D45E4);
-    font-size: 40rpx;
-    letter-spacing: 8px;
+  &-header {
+    position: absolute;
+    bottom: 15rpx;
+    left: 30rpx;
+    z-index: 20;
+    height: 60rpx;
+    padding: 5rpx 30rpx;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 80rpx;
+    box-shadow: 0 0 4rpx #eee;
   }
-  min-height: 100vh;
-  /* background-color: #eceff1; */
-  &-main {
+  &-header-avatar {
+    display: inline-block;
+    width: 50rpx;
+    height: 50rpx;
+    margin-right: 20rpx;
+    border-radius: 50%;
+    vertical-align: middle;
+    overflow: hidden;
+  }
+  &-header-image {
+    width: 100%;
+    height: 100%;
+  }
+  &-header-name {
+    display: inline;
+    font-size: 24rpx;
+    vertical-align: middle;
+    color: #666;
+  }
+  &-sub-title {
+    color: #999;
+    font-size: 24rpx;
+    padding: 20rpx;
+    &-image {
+      display: inline-block;
+      width: 30rpx;
+      height: 30rpx;
+      margin-right: 10rpx;
+    }
+  }
+  &-ul {
+    padding: 0 20rpx 150rpx 20rpx;
   }
   &-li {
-    padding: 30rpx;
-    border-bottom: 1rpx solid #eee;
-  }
-  &-box {
-    display: flex;
-  }
-  &-avatar {
-    flex: 0 0 90rpx;
-    width: 90rpx;
-    height: 90rpx;
-    margin-right: 30rpx;
-    padding: 2rpx;
-  }
-  &-image {
-    width: 90rpx;
-    height: 90rpx;
+    padding: 20rpx;
+    background-color: #fff;
+    margin-bottom: 20rpx;
+    box-shadow: 0 0 4rpx #ccc;
+    border-radius: 4rpx;
+    font-size: 12px;
+    color: #666;
   }
   &-content {
-    width: 100%;
-  }
-  &-title {
-    font-size: 28rpx;
-    color: #888;
-  }
-  &-desc {
-    font-size: 28rpx;
-    line-height: 1.5em;
     padding: 10rpx 0;
   }
   &-meta {
-    display: flex;
-    font-size: 12px;
-  }
-  &-meta-left {
-    flex: 1;
+    text-align: right;
     color: #999;
   }
-  &-meta-right {
-    flex: 1;
-    text-align: right;
-  }
-  &-meta-right-icon {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-  }
-  &-meta-right-text {
-    position: relative;
-    top: -6px;
-    display: inline-block;
-    font-size: 12px;
-    color: #888;
-  }
-  &-empty {
-    width: 120px;
-    height: 120px;
-    margin: 100px auto;
-    font-size: 14px;
-    color: #888;
+  &-loading {
+    padding: 20rpx;
     text-align: center;
+    font-size: 24rpx;
+    color: #999;
   }
-  &-empty-icon {
+  &-btn-group {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
     width: 100%;
-    height: 100%;
-    margin-bottom: 10px;
+    padding: 30rpx;
+    box-shadow: 0 0 4rpx #ccc;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+  }
+  &-btn {
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 28rpx;
+    text-align: center;
+    background-color: #0D45E4;
+    color: #fff;
   }
 }
 </style>

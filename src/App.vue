@@ -4,6 +4,7 @@ import API from '@/api'
 export default {
   created () {
     this.getUserInfo()
+    this.getPrompt()
   },
   methods: {
     getUserInfo () {
@@ -22,6 +23,16 @@ export default {
           })
         }
       })
+    },
+    async getPrompt () {
+      try {
+        const res = await API.getPrompt()
+        if (res.data) {
+          wx.setStorageSync('configText', res.data)
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
@@ -29,6 +40,9 @@ export default {
 
 <style>
 page {
-  /* background-color: #0D45E4; */
+  padding-top: 70px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
 }
 </style>

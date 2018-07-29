@@ -17,7 +17,9 @@ export default {
       'pages/index/main',
       'pages/success/main',
       'pages/ucenter/main',
-      'pages/detail/main'
+      'pages/detail/main',
+      'pages/question/main',
+      'pages/aboutus/main'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -25,32 +27,6 @@ export default {
       navigationBarTitleText: '时光邮件',
       navigationBarTextStyle: 'white',
       navigationStyle: 'custom'
-    },
-    tabBar: {
-      backgroundColor: '#ffffff',
-      borderStyle: 'gary',
-      selectedColor: '#0D45E4',
-      color: '#666',
-      list: [
-        {
-          pagePath: 'pages/index/main',
-          iconPath: 'static/images/icon/edit.png',
-          selectedIconPath: 'static/images/icon/edit-hover.png',
-          text: '写信'
-        },
-        {
-          pagePath: 'pages/letter/main',
-          iconPath: 'static/images/icon/find.png',
-          selectedIconPath: 'static/images/icon/find-hover.png',
-          text: '发现'
-        },
-        {
-          pagePath: 'pages/ucenter/main',
-          iconPath: 'static/images/icon/user.png',
-          selectedIconPath: 'static/images/icon/user-hover.png',
-          text: '我的'
-        }
-      ]
     }
   }
 }

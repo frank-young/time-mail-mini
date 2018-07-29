@@ -1,14 +1,27 @@
 <template>
   <div class="container">
-    <div class="tips">
-      {{ configText.tips }}
+    <div class="header">
+      <div class="header-wrap" @click="toLetterList">
+        <image class="header-image" src="/static/images/back.png"></image>
+        <span class="header-text">{{ configText.tips }}</span>
+      </div>
     </div>
     <div class="letter-wrap">
       <form @submit="submit">
-        <div class="form-group">
-          <input class="title" :placeholder="configText.titlePlaceholder" type="text" v-model="letter.title">
+        <div class="form-line-group">
+          <label class="form-line-label">主题</label>
+          <input class="form-line-title" :placeholder="configText.titlePlaceholder" type="text" v-model="letter.title">
+        </div>
+        <div class="form-line-group">
+          <label class="form-line-label">邮箱</label>
+          <input class="form-line-title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入邮箱,信件将会发送到邮箱里" v-model="letter.email">
+        </div>
+        <div class="form-line-group">
+          <label class="form-line-label">手机</label>
+          <input class="form-line-title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入手机号，用于提醒信件（严格保密）" v-model="letter.phone">
         </div>
         <div class="form-group">
+          <div class="select-title">梦想内容</div>
           <textarea :maxlength="-1" v-model="letter.content" :placeholder="configText.letterPlaceholder" class="content"></textarea>
         </div>
         <div class="form-group">
@@ -60,12 +73,6 @@
             </div>
           </radio-group>
         </div>
-        <div class="form-group">
-          <input class="title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入邮箱,信件将会发送到邮箱里" v-model="letter.email">
-        </div>
-        <div class="form-group">
-          <input class="title" type="text" placeholder-style="font-size: 14px;" placeholder="请输入手机号，用于提醒信件（保密不外泄）" v-model="letter.phone">
-        </div>
         <div class="form-froup">
           <button :disabled="isDisabled" :loading="isSending" hover-class="send-hover" class="send animate-background" form-type="submit"> {{ sendText }} </button>
         </div>
@@ -93,13 +100,6 @@ export default {
         phone: '',
         arrive_time: miment().add(1, 'YYYY').format('YYYY-MM-DD')
       },
-      // 默认配置文字
-      configText: {
-        tips: '把梦想寄给未来',
-        titlePlaceholder: '标题',
-        letterPlaceholder: '',
-        share_message: '给10年后的自己写一封信如何？'
-      },
       sendText: '寄送到未来',
       // 时间选择
       arriveYear: 1,
@@ -118,9 +118,10 @@ export default {
     Toast
   },
   computed: {
-  },
-  created () {
-    this.getPrompt()
+    // 默认配置文字
+    configText () {
+      return wx.getStorageSync('configText')
+    }
   },
   mounted () {
     this.userInfo = wx.getStorageSync('userInfo')
@@ -129,15 +130,10 @@ export default {
     }
   },
   methods: {
-    async getPrompt () {
-      try {
-        const res = await API.getPrompt()
-        if (res.data !== null) {
-          this.configText = res.data
-        }
-      } catch (e) {
-        console.log(e)
-      }
+    toLetterList () {
+      wx.redirectTo({
+        url: '/pages/letter/main'
+      })
     },
     // 默认到达年份选择
     arriveYearChange (e) {
@@ -250,8 +246,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import '~@/asset/less/style.less';
+
 .container {
-  background-color: #fff;
   .tips {
     padding: 30rpx 100rpx;
     line-height: 1.7em;
@@ -263,7 +260,26 @@ export default {
     letter-spacing: 8px;
   }
   .letter-wrap {
-    padding: 30rpx 40rpx 40rpx 40rpx;
+    padding: 30rpx 30rpx 40rpx 30rpx;
+  }
+  .form-line-group {
+    padding: 16rpx 0;
+    margin-bottom: 30rpx;
+    font-size: 28rpx;
+    display: flex;
+    box-shadow: 0 0 4rpx #ccc;
+    border-radius: 4rpx;
+    background-color: #fff;
+    .form-line-label {
+      width: 100rpx;
+      padding: 18rpx;
+      font-size: 32rpx;
+    }
+    .form-line-title {
+      padding: 15rpx;
+      font-size: 28rpx;
+      width: 100%;
+    }
   }
   .form-group {
     margin-bottom: 30rpx;
@@ -275,16 +291,19 @@ export default {
     font-size: 32rpx;
   }
   .content {
-    border: 1rpx solid #ccc;
     width: 100%;
     height: 300px;
     padding: 30rpx;
+    box-shadow: 0 0 4rpx #ccc;
     line-height: 1.7em;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
   }
   .select-title {
     color: #888;
+    margin-bottom: 10rpx;
   }
   .select-content {
     position: relative;

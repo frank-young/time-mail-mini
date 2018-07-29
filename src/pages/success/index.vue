@@ -1,63 +1,62 @@
 <template>
   <div class="success">
-    <div class="success-box">
-      <div class="success-icon">
+    <div class="header">
+      <div class="header-wrap" @click="navigateBack">
+        <span class="header-text">信件已保存</span>
       </div>
+    </div>
+    <div class="success-tips">
+      我们维护了一个公众号社区，欢迎大家的加入，一起见证我们的梦想。或者直接搜索微信号：yangjunalns
+      <div class="success-tips-btn" @click="copyCtrl">
+        点击复制
+      </div>
+      备注时光邮件。
+    </div>
+    <div class="success-qrcode-text">
+      长按保存二维码
+    </div>
+    <div class="success-qrcode">
+      <image @click="saveImage" class="success-qrcode-image" src="/static/images/qrcode.jpg" alt=""></image>
+    </div>
+    <div class="success-box">
       <div class="success-text">
-        {{ configText.success_tip }}
+        信件已保存，将在指定时间寄出
       </div>
       <div class="success-btn-group">
-        <button class="success-btn" type="button" @click="toIndex">
-          返回首页
+        <button class="success-btn" open-type="share">
+          推荐给朋友
         </button>
       </div>
-      <div class="success-tips">
-        欢迎您成为时光邮件第一批用户❤️，为了做好服务，邀请您加入我们的社区👇，关注公众号：时光邮件
-        <div class="success-tips-btn" @click="copyCtrl">
-          点击复制
-        </div>
-      </div>
-      <div class="success-qrcode-text">
-        截图保存二维码
-      </div>
-      <div class="success-qrcode">
-        <image @click="saveImage" class="success-qrcode-image" src="/static/images/qrcode.jpg" alt=""></image>
+      <div class="success-btn-group">
+        <button class="success-home-btn" type="button" @click="toLetter">
+          返回首页
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import API from '@/api'
-
 export default {
   components: {
+  },
+  computed: {
+    configText () {
+      return wx.getStorageSync('configText')
+    }
   },
   data () {
     return {
       isShow: false,
-      toastMsg: '',
-      configText: {
-        success_tip: '',
-        share_message: '给10年后的自己写一封信如何？'
-      }
+      toastMsg: ''
     }
   },
   created () {
-    this.getPrompt()
   },
   methods: {
-    async getPrompt () {
-      try {
-        const res = await API.getPrompt()
-        this.configText = res.data
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    toIndex () {
+    toLetter () {
       wx.reLaunch({
-        url: '/pages/index/main'
+        url: '/pages/letter/main'
       })
     },
     saveImage () {
@@ -69,8 +68,14 @@ export default {
     },
     copyCtrl () {
       wx.setClipboardData({
-        data: '时光邮件',
-        success () {}
+        data: 'yangjunalns',
+        success () {
+          wx.showToast({
+            title: '复制微信号成功',
+            icon: 'success',
+            duration: 2000
+          })
+        }
       })
     }
   },
@@ -85,9 +90,9 @@ export default {
 </script>
 
 <style lang="less">
+@import '~@/asset/less/style.less';
+
 .success {
-  height: 100vh;
-  background-color: #fff;
   &-box {
 
   }
@@ -107,9 +112,15 @@ export default {
     line-height: 1.7em;
   }
   &-btn-group {
-    padding: 30rpx;
+    padding: 30rpx 30rpx 0 30rpx;
   }
   &-btn {
+    padding: 15rpx;
+    background-color: #0D45E4;
+    color: #fff;
+    font-size: 14px;
+  }
+  &-home-btn {
     padding: 15rpx;
     background-color: #fff;
     color: #666;
