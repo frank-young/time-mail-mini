@@ -3,16 +3,24 @@
     <div class="header">
       <div class="letter-header" @click="toUcenterInfo">
         <div class="letter-header-avatar">
-          <image class="letter-header-image" :src="userInfo.avatar"></image>
+          <open-data class="letter-header-image" type="userAvatarUrl"></open-data>
         </div>
         <div class="letter-header-name">
-          {{ userInfo.nickname }}
+          <open-data type="userNickName"></open-data>
         </div>
       </div>
     </div>
     <div class="letter-sub-title">
       <image class="letter-sub-title-image" src="/static/images/icon/edit-hover.png"></image>
-      公开信件
+      {{ configText.text1 }}
+    </div>
+    <div class="v-modal" v-if="needPermision">
+      <div class="v-modal-content">
+        <div class="v-modal-title">
+          {{ tipsMsg }}
+        </div>
+        <button class="v-modal-btn" open-type="getUserInfo" @getuserinfo="setPermision">点我</button>
+      </div>
     </div>
     <div class="letter-main">
       <div class="letter-ul">
@@ -40,6 +48,8 @@
 <script>
 import API from '@/api'
 
+const ERR_MSG = 'getUserInfo:ok'
+
 export default {
   data () {
     return {
@@ -50,7 +60,9 @@ export default {
       },
       loading: false,
       isLastPage: false,
-      loadingText: '玩命加载中...'
+      loadingText: '玩命加载中...',
+      needPermision: false,
+      tipsMsg: '一键快速登录'
     }
   },
   onShow () {
@@ -68,14 +80,26 @@ export default {
   onReachBottom () {
     this.getPublicLetters()
   },
-  created () {
+  mounted () {
   },
   computed: {
-    userInfo () {
-      return wx.getStorageSync('userInfo')
+    // 默认配置文字
+    configText () {
+      return wx.getStorageSync('configText')
     }
   },
   methods: {
+    setPermision (e) {
+      if (e.target.errMsg === ERR_MSG) {
+        this.needPermision = false
+        this.loginByWeixin()
+        wx.navigateTo({
+          url: '/pages/index/main'
+        })
+      } else {
+        this.tipsMsg = '需要点击“允许”哟～'
+      }
+    },
     async getPublicLetters () {
       if (this.loading) return
       try {
@@ -93,6 +117,8 @@ export default {
       }
     },
     toWrite () {
+      this.needPermision = !Object.keys(wx.getStorageSync('userInfo')).length
+      if (this.needPermision) return
       wx.navigateTo({
         url: '/pages/index/main'
       })
@@ -109,6 +135,24 @@ export default {
     _isLastPage () {
       this.isLastPage = true
       this.loadingText = '已没有更多的梦想了～'
+    },
+    loginByWeixin () {
+      wx.login({
+        success: (res) => {
+          wx.getUserInfo({
+            success (res2) {
+              API.loginByWeixin({code: res.code, userInfo: res2})
+              .then(res => {
+                wx.setStorageSync('userInfo', res.data.userInfo)
+                wx.setStorageSync('token', res.data.token)
+              })
+            },
+            fail (err) {
+              console.log(err)
+            }
+          })
+        }
+      })
     }
   }
 }
@@ -168,11 +212,12 @@ export default {
     margin-bottom: 20rpx;
     box-shadow: 0 0 4rpx #ccc;
     border-radius: 4rpx;
-    font-size: 12px;
+    font-size: 14px;
     color: #666;
   }
   &-content {
     padding: 10rpx 0;
+    line-height: 2em;
   }
   &-meta {
     text-align: right;
@@ -203,6 +248,37 @@ export default {
     text-align: center;
     background-color: #0D45E4;
     color: #fff;
+  }
+}
+.v-modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 30;
+  background-color: rgba(0, 0, 0, 0.5);
+  &-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    z-index: 40;
+    padding: 30rpx;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+  }
+  &-title {
+    font-size: 16px;
+    line-height: 2em;
+    margin-bottom: 20rpx;
+    text-align: center;
+  }
+  &-btn {
+    border-radius: 4rpx;
+    background-color: #0D45E4;
+    color: #fff;
+    font-size: 14px;
   }
 }
 </style>

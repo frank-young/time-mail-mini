@@ -238,7 +238,7 @@ export default {
   onShareAppMessage: function () {
     return {
       title: this.configText.share_message,
-      path: '/pages/index/main',
+      path: '/pages/letter/main',
       imageUrl: '/static/images/bg.jpg'
     }
   }

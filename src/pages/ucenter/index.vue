@@ -9,11 +9,12 @@
     <div class="ucenter-box">
       <div class="ucenter-box-header">
         <div class="ucenter-avatar">
-          <image class="ucenter-image" :src="userInfo.avatar"></image>
+          <!-- <image class="ucenter-image" :src="userInfo.avatar"></image> -->
+          <open-data class="ucenter-image" type="userAvatarUrl"></open-data>
         </div>
         <div class="ucenter-name">
           <div class="">
-            {{ userInfo.nickname }}
+            <open-data type="userNickName"></open-data>
           </div>
           <div class="ucenter-name-desc">
             你的梦想，是一件很伟大的事！
