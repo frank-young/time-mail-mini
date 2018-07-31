@@ -6,7 +6,10 @@
         <span class="header-text">{{ configText.tips }}</span>
       </div>
     </div>
-    <div class="letter-wrap">
+    <div v-if="!~~configText.text2" class="letter-empty">
+      {{ configText.text3 }}
+    </div>
+    <div v-else class="letter-wrap">
       <form @submit="submit">
         <div class="form-line-group">
           <label class="form-line-label">主题</label>
@@ -248,6 +251,16 @@ export default {
 <style scoped lang="less">
 @import '~@/asset/less/style.less';
 
+.letter-empty {
+  margin: 200rpx 40rpx;
+  padding: 40rpx;
+  text-align: center;
+  color: #666;
+  font-size: 32rpx;
+  border-radius: 8rpx;
+  box-shadow: 0 0 8rpx #ccc;
+  background-color: #fff;
+}
 .container {
   .tips {
     padding: 30rpx 100rpx;

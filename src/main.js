@@ -17,7 +17,7 @@ export default {
       'pages/index/main',
       'pages/success/main',
       'pages/ucenter/main',
-      'pages/detail/main',
+      // 'pages/detail/main',
       'pages/question/main',
       'pages/aboutus/main'
     ],
