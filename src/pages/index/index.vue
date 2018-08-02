@@ -6,7 +6,7 @@
         <span class="header-text">{{ configText.tips }}</span>
       </div>
     </div>
-    <div v-if="!~~configText.text2" class="letter-empty">
+    <div v-if="!~~configText.audit_switch" class="letter-empty">
       {{ configText.text3 }}
     </div>
     <div v-else class="letter-wrap">

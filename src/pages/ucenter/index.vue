@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="ucenter-ul">
+      <div class="ucenter-ul" v-if="~~configText.audit_switch">
         <div class="ucenter-li"  @click="toQuestion">
           <div class="ucenter-text">
             常见问题

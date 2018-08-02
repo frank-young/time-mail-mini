@@ -22,7 +22,10 @@
         <button class="v-modal-btn" open-type="getUserInfo" @getuserinfo="setPermision">点我</button>
       </div>
     </div>
-    <div class="letter-main">
+    <div v-if="!~~configText.audit_switch" class="letter-empty">
+      {{ configText.text3 }}
+    </div>
+    <div v-else class="letter-main">
       <div class="letter-ul">
         <div class="letter-li" v-for="letter in letters" :key="letter.id">
           <div class="letter-content">
@@ -36,10 +39,10 @@
           {{ loadingText }}
         </div>
       </div>
-    </div>
-    <div class="letter-btn-group">
-      <div class="letter-btn" @click="toWrite">
-        我也要写
+      <div class="letter-btn-group">
+        <div class="letter-btn" @click="toWrite">
+          我也要写
+        </div>
       </div>
     </div>
   </div>
@@ -280,5 +283,15 @@ export default {
     color: #fff;
     font-size: 14px;
   }
+}
+.letter-empty {
+  margin: 200rpx 40rpx;
+  padding: 40rpx;
+  text-align: center;
+  color: #666;
+  font-size: 32rpx;
+  border-radius: 8rpx;
+  box-shadow: 0 0 8rpx #ccc;
+  background-color: #fff;
 }
 </style>
