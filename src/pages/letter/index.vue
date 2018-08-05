@@ -65,7 +65,8 @@ export default {
       isLastPage: false,
       loadingText: '玩命加载中...',
       needPermision: false,
-      tipsMsg: '一键快速登录'
+      tipsMsg: '一键快速登录',
+      configText: {}
     }
   },
   onShow () {
@@ -83,15 +84,34 @@ export default {
   onReachBottom () {
     this.getPublicLetters()
   },
+  onShareAppMessage: function () {
+    return {
+      title: this.configText.share_message,
+      path: '/pages/letter/main',
+      imageUrl: '/static/images/bg.jpg'
+    }
+  },
   mounted () {
+    this.getPrompt()
   },
   computed: {
     // 默认配置文字
-    configText () {
-      return wx.getStorageSync('configText')
-    }
+    // configText () {
+    //   return wx.getStorageSync('configText')
+    // }
   },
   methods: {
+    async getPrompt () {
+      try {
+        const res = await API.getPrompt()
+        if (res.data) {
+          // wx.setStorageSync('configText', res.data)
+          this.configText = res.data
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
     setPermision (e) {
       if (e.target.errMsg === ERR_MSG) {
         this.needPermision = false

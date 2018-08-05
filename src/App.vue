@@ -3,7 +3,7 @@ import API from '@/api'
 
 export default {
   created () {
-    this.getUserInfo()
+    // this.getUserInfo()
     this.getPrompt()
   },
   methods: {
